@@ -393,7 +393,7 @@
 
 .hero-scroll-indicator {
     position: absolute;
-    bottom: 60px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -465,7 +465,7 @@
     }
     
     .hero-scroll-indicator {
-        bottom: 40px;
+        bottom: 60px;
     }
     
     .hero-content-wrapper {

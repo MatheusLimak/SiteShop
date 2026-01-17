@@ -7,7 +7,20 @@ const produtos = [
         precoAntigo: 899.90,
         imagem: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=600&h=800&fit=crop",
         categoria: "masculino",
-        promocao: true
+        promocao: true,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Cinza', codigo: '#808080' },
+            { nome: 'Navy', codigo: '#001f3f' }
+        ],
+        caracteristicas: [
+            'Tecido premium importado',
+            'Forro interno acolchoado',
+            'Zíper de alta qualidade',
+            'Bolsos laterais funcionais',
+            'Corte moderno e confortável'
+        ]
     },
     {
         id: 2,
@@ -15,7 +28,20 @@ const produtos = [
         preco: 249.90,
         imagem: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=800&fit=crop",
         categoria: "masculino",
-        promocao: false
+        promocao: false,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Branco', codigo: '#FFFFFF' },
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Cinza', codigo: '#808080' }
+        ],
+        caracteristicas: [
+            'Algodão 100% premium',
+            'Estampa exclusiva',
+            'Corte regular fit',
+            'Lavagem à máquina',
+            'Durabilidade garantida'
+        ]
     },
     {
         id: 3,
@@ -24,7 +50,19 @@ const produtos = [
         precoAntigo: 599.90,
         imagem: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600&h=800&fit=crop",
         categoria: "masculino",
-        promocao: true
+        promocao: true,
+        tamanhos: ['38', '40', '42', '44', '46'],
+        cores: [
+            { nome: 'Azul Escuro', codigo: '#000080' },
+            { nome: 'Preto', codigo: '#000000' }
+        ],
+        caracteristicas: [
+            'Tecido stretch premium',
+            'Corte slim fit',
+            'Elastano para conforto',
+            'Bolsos traseiros',
+            'Lavagem fácil'
+        ]
     },
     {
         id: 4,
@@ -32,7 +70,20 @@ const produtos = [
         preco: 899.90,
         imagem: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop",
         categoria: "masculino",
-        promocao: false
+        promocao: false,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Navy', codigo: '#001f3f' },
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Cinza', codigo: '#808080' }
+        ],
+        caracteristicas: [
+            'Tecido nobre importado',
+            'Forro interno de seda',
+            'Corte clássico moderno',
+            'Botões premium',
+            'Ideal para ocasiões formais'
+        ]
     },
     {
         id: 5,
@@ -41,7 +92,20 @@ const produtos = [
         precoAntigo: 699.90,
         imagem: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
         categoria: "feminino",
-        promocao: true
+        promocao: true,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Vermelho', codigo: '#FF0000' },
+            { nome: 'Azul Royal', codigo: '#4169E1' }
+        ],
+        caracteristicas: [
+            'Tecido fluido premium',
+            'Corte evasê elegante',
+            'Manga longa',
+            'Lavagem delicada',
+            'Versátil para diferentes ocasiões'
+        ]
     },
     {
         id: 6,
@@ -49,7 +113,20 @@ const produtos = [
         preco: 299.90,
         imagem: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=800&fit=crop",
         categoria: "feminino",
-        promocao: false
+        promocao: false,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Branco', codigo: '#FFFFFF' },
+            { nome: 'Rosa', codigo: '#FFC0CB' },
+            { nome: 'Bege', codigo: '#F5F5DC' }
+        ],
+        caracteristicas: [
+            'Algodão premium',
+            'Corte oversized',
+            'Gola alta',
+            'Lavagem à máquina',
+            'Confortável e estilosa'
+        ]
     },
     {
         id: 7,
@@ -58,7 +135,20 @@ const produtos = [
         precoAntigo: 299.90,
         imagem: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800&fit=crop",
         categoria: "feminino",
-        promocao: true
+        promocao: true,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Branco', codigo: '#FFFFFF' },
+            { nome: 'Jeans', codigo: '#191970' }
+        ],
+        caracteristicas: [
+            'Tecido denim premium',
+            'Corte high waist',
+            'Elastano para conforto',
+            'Bolsos funcionais',
+            'Lavagem fácil'
+        ]
     },
     {
         id: 8,
@@ -66,7 +156,20 @@ const produtos = [
         preco: 1199.90,
         imagem: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=600&h=800&fit=crop",
         categoria: "masculino",
-        promocao: false
+        promocao: false,
+        tamanhos: ['P', 'M', 'G', 'GG'],
+        cores: [
+            { nome: 'Verde Militar', codigo: '#556B2F' },
+            { nome: 'Preto', codigo: '#000000' },
+            { nome: 'Cáqui', codigo: '#C3B091' }
+        ],
+        caracteristicas: [
+            'Tecido impermeável',
+            'Forro térmico removível',
+            'Capuz ajustável',
+            'Bolsos múltiplos',
+            'Ideal para clima frio'
+        ]
     }
 ];
 
@@ -115,12 +218,22 @@ function renderProducts(filter = 'all') {
                     ${produto.precoAntigo ? `<span class="price-old">${formatPrice(produto.precoAntigo)}</span>` : ''}
                     <span class="price-current">${formatPrice(produto.preco)}</span>
                 </div>
-                <button class="add-to-cart-btn" onclick="adicionarAoCarrinho(${produto.id})">
+                <button class="add-to-cart-btn" onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})">
                     Adicionar ao Carrinho
                 </button>
             </div>
         `;
         card.insertBefore(img, card.firstChild);
+        
+        // Adicionar clique no card para abrir modal
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.add-to-cart-btn')) return;
+            if (typeof abrirModalProduto === 'function') {
+                abrirModalProduto(produto);
+            }
+        });
+        
         grid.appendChild(card);
     });
 }

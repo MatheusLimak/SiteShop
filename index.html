@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/hero.css">
     <link rel="stylesheet" href="assets/css/checkout.css">
+    <link rel="stylesheet" href="assets/css/product-modal.css">
 </head>
 <body>
     <!-- Header -->
@@ -462,8 +463,64 @@
         <span class="cart-count" id="cart-count">0</span>
     </button>
 
+    <!-- Modal do Produto -->
+    <div class="product-modal" id="product-modal">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close" aria-label="Fechar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <div class="modal-image-section">
+                    <img id="modal-product-image" src="" alt="" class="modal-product-image">
+                </div>
+                <div class="modal-info-section">
+                    <div class="modal-header">
+                        <span id="modal-product-tag" class="modal-tag" style="display: none;"></span>
+                        <h2 id="modal-product-name" class="modal-product-name"></h2>
+                        <div id="modal-product-price" class="modal-product-price"></div>
+                    </div>
+                    
+                    <div class="modal-options">
+                        <div class="option-group">
+                            <label class="option-label">Tamanho</label>
+                            <div class="option-buttons" id="size-options"></div>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Cor</label>
+                            <div class="option-buttons color-options" id="color-options"></div>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Quantidade</label>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" id="quantity-decrease">-</button>
+                                <input type="number" id="quantity-input" value="1" min="1" max="10" readonly>
+                                <button class="quantity-btn" id="quantity-increase">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-description">
+                        <h3 class="description-title">Características</h3>
+                        <ul id="modal-product-features" class="features-list"></ul>
+                    </div>
+                    
+                    <button class="modal-add-cart-btn" id="modal-add-cart-btn">
+                        <span>Adicionar ao Carrinho</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/main.js"></script>
     <script src="assets/js/category-slideshow.js"></script>
     <script src="assets/js/checkout.js"></script>
+    <script src="assets/js/product-modal.js"></script>
 </body>
 </html>

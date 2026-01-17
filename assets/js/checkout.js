@@ -93,14 +93,19 @@ function initCheckout() {
     
     // Navegação entre etapas
     document.addEventListener('click', (e) => {
-        if (e.target.id === 'checkout-next') {
+        const target = e.target;
+        if (target.id === 'checkout-next' || target.closest('#checkout-next')) {
+            e.preventDefault();
+            e.stopPropagation();
             const step = checkoutState.currentStep;
             if (step === 4) {
                 finalizeOrder();
             } else {
                 nextStep();
             }
-        } else if (e.target.id === 'checkout-prev') {
+        } else if (target.id === 'checkout-prev' || target.closest('#checkout-prev')) {
+            e.preventDefault();
+            e.stopPropagation();
             prevStep();
         }
     });
@@ -249,6 +254,13 @@ function renderCheckoutStep(step) {
             nextBtn.textContent = 'Continuar';
         }
         nextBtn.disabled = !canContinue;
+        if (!canContinue) {
+            nextBtn.style.opacity = '0.5';
+            nextBtn.style.cursor = 'not-allowed';
+        } else {
+            nextBtn.style.opacity = '1';
+            nextBtn.style.cursor = 'pointer';
+        }
     }
     
     // Renderizar conteúdo específico
@@ -273,13 +285,15 @@ function renderCheckoutStep(step) {
 // Próxima etapa
 function nextStep() {
     if (!validateCurrentStep()) {
-        return;
+        return false;
     }
     
     if (checkoutState.currentStep < 4) {
         checkoutState.currentStep++;
         renderCheckoutStep(checkoutState.currentStep);
+        return true;
     }
+    return false;
 }
 
 // Etapa anterior
@@ -414,6 +428,15 @@ function loadPaymentMethods() {
     });
 }
 
+// Função para formatar preço
+function formatPrice(value) {
+    if (typeof value !== 'number') return 'R$ 0,00';
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    }).format(value);
+}
+
 // Carregar resumo do pedido
 function loadOrderSummary() {
     const orderSummary = document.getElementById('order-summary');
@@ -421,6 +444,33 @@ function loadOrderSummary() {
     
     // Verificar se carrinho existe
     const carrinhoAtual = window.carrinho || (typeof carrinho !== 'undefined' ? carrinho : []);
+    
+    if (!carrinhoAtual || carrinhoAtual.length === 0) {
+        orderSummary.innerHTML = '<p style="text-align: center; color: var(--color-gray); padding: var(--spacing-lg);">Carrinho vazio</p>';
+        return;
+    }
+    
+    // Renderizar itens do carrinho
+    let itemsHTML = '<div style="margin-bottom: var(--spacing-lg);"><h4 style="font-size: 1rem; margin-bottom: var(--spacing-md); color: var(--color-black);">Itens do Pedido:</h4>';
+    carrinhoAtual.forEach((item, index) => {
+        const quantidade = item.quantidade || 1;
+        const itemTotal = item.preco * quantidade;
+        const tamanhoCorInfo = [];
+        if (item.tamanho) tamanhoCorInfo.push(`Tam: ${item.tamanho}`);
+        if (item.cor) tamanhoCorInfo.push(`Cor: ${item.cor.nome}`);
+        const extraInfo = tamanhoCorInfo.length > 0 ? ` <span style="font-size: 0.85rem; color: var(--color-gray);">(${tamanhoCorInfo.join(', ')})</span>` : '';
+        
+        itemsHTML += `
+            <div style="display: flex; justify-content: space-between; align-items: start; padding: var(--spacing-sm) 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                <div style="flex: 1;">
+                    <p style="margin: 0; font-weight: 500; color: var(--color-black);">${item.nome}${extraInfo}</p>
+                    <p style="margin: 0.25rem 0 0 0; font-size: 0.85rem; color: var(--color-gray);">${formatPrice(item.preco)} x ${quantidade}</p>
+                </div>
+                <div style="font-weight: 600; color: var(--color-black);">${formatPrice(itemTotal)}</div>
+            </div>
+        `;
+    });
+    itemsHTML += '</div>';
     
     const subtotal = carrinhoAtual.reduce((sum, item) => sum + (item.preco * (item.quantidade || 1)), 0);
     const shipping = checkoutState.selectedShipping?.price || 0;
@@ -436,33 +486,35 @@ function loadOrderSummary() {
     
     const finalTotal = total - discount;
     
-    orderSummary.innerHTML = `
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <span>${formatPrice(subtotal)}</span>
+    orderSummary.innerHTML = itemsHTML + `
+        <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 2px solid rgba(0,0,0,0.1);">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span>${formatPrice(subtotal)}</span>
+            </div>
+            ${discount > 0 ? `
+            <div class="summary-row" style="color: #ff3b30;">
+                <span>Desconto (${checkoutState.selectedPayment === 'pix' ? 'PIX' : 'Débito'})</span>
+                <span>-${formatPrice(discount)}</span>
+            </div>
+            ` : ''}
+            <div class="summary-row">
+                <span>Frete (${checkoutState.selectedShipping?.name || 'Não selecionado'})</span>
+                <span>${shipping === 0 ? 'Grátis' : formatPrice(shipping)}</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>${formatPrice(finalTotal)}</span>
+            </div>
         </div>
-        ${discount > 0 ? `
-        <div class="summary-row" style="color: #ff3b30;">
-            <span>Desconto (${checkoutState.selectedPayment === 'pix' ? 'PIX' : 'Débito'})</span>
-            <span>-${formatPrice(discount)}</span>
-        </div>
-        ` : ''}
-        <div class="summary-row">
-            <span>Frete (${checkoutState.selectedShipping?.name || 'Não selecionado'})</span>
-            <span>${shipping === 0 ? 'Grátis' : formatPrice(shipping)}</span>
-        </div>
-        <div class="summary-row total">
-            <span>Total</span>
-            <span>${formatPrice(finalTotal)}</span>
-        </div>
-        <div style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid rgba(0,0,0,0.1);">
+        <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid rgba(0,0,0,0.1);">
             <p style="font-size: 0.9rem; color: var(--color-gray-dark); margin-bottom: var(--spacing-sm);"><strong>Endereço de entrega:</strong></p>
             <p style="font-size: 0.85rem; color: var(--color-gray-dark); margin-bottom: var(--spacing-md);">
-                ${checkoutState.selectedAddress?.name}<br>
-                ${checkoutState.selectedAddress?.street}, ${checkoutState.selectedAddress?.number}<br>
-                ${checkoutState.selectedAddress?.neighborhood} - ${checkoutState.selectedAddress?.city}, ${checkoutState.selectedAddress?.state}
+                ${checkoutState.selectedAddress?.name || 'Não selecionado'}<br>
+                ${checkoutState.selectedAddress?.street || ''}, ${checkoutState.selectedAddress?.number || ''}<br>
+                ${checkoutState.selectedAddress?.neighborhood || ''} - ${checkoutState.selectedAddress?.city || ''}, ${checkoutState.selectedAddress?.state || ''}
             </p>
-            <p style="font-size: 0.9rem; color: var(--color-gray-dark);"><strong>Forma de pagamento:</strong> ${getPaymentMethodName(checkoutState.selectedPayment)}</p>
+            <p style="font-size: 0.9rem; color: var(--color-gray-dark); margin-bottom: var(--spacing-sm);"><strong>Forma de pagamento:</strong> ${getPaymentMethodName(checkoutState.selectedPayment) || 'Não selecionado'}</p>
         </div>
     `;
 }
@@ -502,6 +554,13 @@ function updateCheckoutButton(step = null) {
     }
     
     nextBtn.disabled = !canContinue;
+    if (!canContinue) {
+        nextBtn.style.opacity = '0.5';
+        nextBtn.style.cursor = 'not-allowed';
+    } else {
+        nextBtn.style.opacity = '1';
+        nextBtn.style.cursor = 'pointer';
+    }
 }
 
 // Salvar novo endereço

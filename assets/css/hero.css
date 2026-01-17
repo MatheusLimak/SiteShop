@@ -307,7 +307,7 @@
 .logo-container {
     position: relative;
     width: 100%;
-    max-width: 700px;
+    max-width: 900px;
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -358,7 +358,7 @@
     object-fit: contain;
     filter: drop-shadow(0 8px 32px rgba(212, 175, 55, 0.3));
     animation: logoFadeIn 1.2s ease-out 0.5s both;
-    transform: scale(1.4);
+    transform: scale(1.8);
 }
 
 @keyframes logoFadeIn {
@@ -456,11 +456,11 @@
     }
     
     .logo-container {
-        max-width: 550px;
+        max-width: 700px;
     }
     
     .hero-logo {
-        transform: scale(1.3);
+        transform: scale(1.6);
     }
 }
 
@@ -508,10 +508,10 @@
     }
     
     .logo-container {
-        max-width: 450px;
+        max-width: 550px;
     }
     
     .hero-logo {
-        transform: scale(1.2);
+        transform: scale(1.5);
     }
 }

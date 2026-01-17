@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 120px var(--spacing-md) var(--spacing-xxl);
+    padding: 120px var(--spacing-md) 120px;
     background: #000000;
     color: var(--color-white);
 }
@@ -393,7 +393,7 @@
 
 .hero-scroll-indicator {
     position: absolute;
-    bottom: var(--spacing-xl);
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -460,9 +460,12 @@
 
 @media (max-width: 768px) {
     .hero {
-        padding: 60px var(--spacing-sm) var(--spacing-xl);
+        padding: 60px var(--spacing-sm) 100px;
         min-height: auto;
-        padding-bottom: var(--spacing-xxl);
+    }
+    
+    .hero-scroll-indicator {
+        bottom: 40px;
     }
     
     .hero-content-wrapper {

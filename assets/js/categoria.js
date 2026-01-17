@@ -51,7 +51,19 @@ const produtosPorCategoria = {
             precoAntigo: 359.90,
             imagem: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=800&fit=crop",
             marca: "oakley",
-            promocao: true
+            promocao: true,
+            tamanhos: ["P", "M", "G"],
+            cores: [
+                { nome: "Preto", codigo: "#000000" },
+                { nome: "Cinza", codigo: "#808080" }
+            ],
+            caracteristicas: [
+                "Material: Poliéster Premium",
+                "Ajuste ajustável",
+                "Logo bordado",
+                "Viseira reta",
+                "Origem: Importado"
+            ]
         },
         {
             id: 4,
@@ -59,7 +71,19 @@ const produtosPorCategoria = {
             preco: 379.90,
             imagem: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=800&fit=crop",
             marca: "tommy",
-            promocao: false
+            promocao: false,
+            tamanhos: ["P", "M", "G", "GG"],
+            cores: [
+                { nome: "Navy", codigo: "#001f3f" },
+                { nome: "Branco", codigo: "#ffffff" }
+            ],
+            caracteristicas: [
+                "Material: Algodão Premium",
+                "Ajuste snapback",
+                "Logo bordado em relevo",
+                "Viseira curva",
+                "Origem: Importado"
+            ]
         },
         {
             id: 5,
@@ -68,7 +92,19 @@ const produtosPorCategoria = {
             precoAntigo: 429.90,
             imagem: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=800&fit=crop",
             marca: "lacoste",
-            promocao: true
+            promocao: true,
+            tamanhos: ["P", "M", "G"],
+            cores: [
+                { nome: "Verde", codigo: "#2d5016" },
+                { nome: "Branco", codigo: "#ffffff" }
+            ],
+            caracteristicas: [
+                "Material: Algodão Premium",
+                "Ajuste regulável",
+                "Logo bordado",
+                "Viseira curva",
+                "Origem: Importado"
+            ]
         },
         {
             id: 6,
@@ -76,7 +112,19 @@ const produtosPorCategoria = {
             preco: 259.90,
             imagem: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=800&fit=crop",
             marca: "oakley",
-            promocao: false
+            promocao: false,
+            tamanhos: ["P", "M", "G"],
+            cores: [
+                { nome: "Preto", codigo: "#000000" },
+                { nome: "Cinza", codigo: "#808080" }
+            ],
+            caracteristicas: [
+                "Material: Poliéster Premium",
+                "Ajuste ajustável",
+                "Logo bordado",
+                "Viseira reta",
+                "Origem: Importado"
+            ]
         }
     ],
     tenis: [
@@ -486,6 +534,16 @@ function getCurrentCategory() {
     return 'bones';
 }
 
+// Garantir que produto tenha dados completos
+function garantirDadosCompletos(produto) {
+    return {
+        ...produto,
+        tamanhos: produto.tamanhos || ['P', 'M', 'G'],
+        cores: produto.cores || [{ nome: 'Padrão', codigo: '#000000' }],
+        caracteristicas: produto.caracteristicas || ['Produto importado de alta qualidade']
+    };
+}
+
 // Renderizar produtos da categoria
 function renderCategoryProducts(filter = 'all') {
     const grid = document.getElementById('products-grid');
@@ -501,6 +559,8 @@ function renderCategoryProducts(filter = 'all') {
         : produtos.filter(p => p.marca === filter);
     
     produtosFiltrados.forEach(produto => {
+        // Garantir dados completos
+        produto = garantirDadosCompletos(produto);
         const card = document.createElement('div');
         card.className = 'product-card';
         
@@ -573,7 +633,14 @@ function renderCategoryProducts(filter = 'all') {
         const btn = document.createElement('button');
         btn.className = 'add-to-cart-btn';
         btn.innerHTML = '<span>Ver Detalhes</span>';
-        btn.onclick = () => abrirModalProduto(produto);
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            if (typeof abrirModalProduto === 'function') {
+                abrirModalProduto(produto);
+            } else if (typeof window.abrirModalProduto === 'function') {
+                window.abrirModalProduto(produto);
+            }
+        };
         
         info.appendChild(name);
         info.appendChild(price);
@@ -581,7 +648,18 @@ function renderCategoryProducts(filter = 'all') {
         
         card.appendChild(img);
         card.appendChild(info);
-        card.onclick = () => abrirModalProduto(produto);
+        
+        // Adicionar clique no card para abrir modal
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            if (e.target.closest('.add-to-cart-btn')) return;
+            if (typeof abrirModalProduto === 'function') {
+                abrirModalProduto(produto);
+            } else if (typeof window.abrirModalProduto === 'function') {
+                window.abrirModalProduto(produto);
+            }
+        };
+        
         grid.appendChild(card);
     });
 }

@@ -1,5 +1,33 @@
-// Dados fictícios de produtos (simulando backend)
-const produtos = [
+// Carregar produtos do JSON ou usar dados padrão
+let produtos = [];
+
+// Função para carregar produtos do JSON
+async function carregarProdutos() {
+    try {
+        const response = await fetch('assets/data/produtos.json');
+        if (response.ok) {
+            const data = await response.json();
+            produtos = data.produtos || [];
+        } else {
+            // Se não conseguir carregar, usar dados padrão
+            produtos = produtosPadrao;
+        }
+    } catch (error) {
+        console.warn('Erro ao carregar produtos do JSON, usando dados padrão:', error);
+        produtos = produtosPadrao;
+    }
+    
+    // Garantir que todos os produtos tenham dados completos
+    produtos = produtos.map(produto => ({
+        ...produto,
+        tamanhos: produto.tamanhos || ['P', 'M', 'G'],
+        cores: produto.cores || [{ nome: 'Padrão', codigo: '#000000' }],
+        caracteristicas: produto.caracteristicas || ['Produto importado de alta qualidade']
+    }));
+}
+
+// Dados padrão (fallback)
+const produtosPadrao = [
     {
         id: 1,
         nome: "Jaqueta Urban Premium",
@@ -231,6 +259,8 @@ function renderProducts(filter = 'all') {
             if (e.target.closest('.add-to-cart-btn')) return;
             if (typeof abrirModalProduto === 'function') {
                 abrirModalProduto(produto);
+            } else if (typeof window.abrirModalProduto === 'function') {
+                window.abrirModalProduto(produto);
             }
         });
         
@@ -485,7 +515,10 @@ function initHeaderScroll() {
 }
 
 // Inicialização
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Aguardar produtos serem carregados
+    await carregarProdutos();
+    
     // Inicializar carrinho sempre
     atualizarCarrinho();
     atualizarContadorCarrinho();
